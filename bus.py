@@ -1,10 +1,12 @@
 import requests
+import pickle
+import os
+import time
 from bs4 import BeautifulSoup
 
 
 class Bus:
     def __init__(self):
-        self.s = requests.Session()
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_2 like Mac OS X) AppleWebKit/603.2.4 '
                           '(KHTML, like Gecko) Mobile/14F89 MicroMessenger/6.5.10 NetType/WIFI Language/zh_CN'
@@ -15,10 +17,6 @@ class Bus:
         self.query_sid_url = 'http://shanghaicity.openservice.kankanews.com/public/bus/get'
         self.query_router_details_url = 'http://shanghaicity.openservice.kankanews.com/public/bus/mes/sid/'
         self.query_stop_url = 'http://shanghaicity.openservice.kankanews.com/public/bus/Getstop'
-
-    def print_cookies(self, cookies):
-        for key in cookies.keys():
-            print(key, cookies[key])
 
     def _homepage(self):
         r = self.s.get(self.homepage_url, headers=self.headers)
@@ -54,12 +52,40 @@ class Bus:
 
         return r
 
-    def query_stop(self, bus_name, direction, stop_id):
+    def _init_request(self):
+        if os.path.exists('session.log'):
+            with open('session.log', 'rb') as f:
+                session = pickle.load(f)
+
+                if session['expired_at']+1800 < time.time():
+                    # session expired
+                    self._make_session()
+                else:
+                    # read session from cache
+                    self.s = session['session']
+
+        else:
+            # session not exists
+            self._make_session()
+
+    def _make_session(self):
+        self.s = requests.Session()
+
         # 第一步：加载首页
         self._homepage()
 
         # 第二部：加载查询页面
         self._query_router_page()
+
+        with open('session.log', 'wb') as f:
+            session = {
+                'session': self.s,
+                'expired_at':  time.time()
+            }
+            pickle.dump(session, f)
+
+    def query_stop(self, bus_name, direction, stop_id):
+        self._init_request()
 
         # 第三步：查询公交路线对应的sid
         sid = self._query_sid(bus_name)
@@ -88,11 +114,7 @@ class Bus:
         }
 
     def query_router(self, bus_name, direction='0'):
-        # 第一步：加载首页
-        self._homepage()
-
-        # 第二部：加载查询页面
-        self._query_router_page()
+        self._init_request()
 
         # 第三步：查询公交路线对应的sid
         sid = self._query_sid(bus_name)
