@@ -27,7 +27,6 @@ def query_router(router_name):
 
     bus = Bus()
     routers = bus.query_router(router_name, direction)
-    print(routers)
 
     return json.dumps(routers)
 
