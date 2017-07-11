@@ -21,6 +21,8 @@
 | stop_id | string | 公交站点的数字代号 |
 | stop_name | string |  公交站点名称 |
 
+---
+
 #### 2.公交到站信息查询接口
 **接口地址**：/bus/<router_name>/stop/<stop_id>
 **请求方式**：GET
