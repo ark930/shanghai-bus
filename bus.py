@@ -79,7 +79,7 @@ class Bus:
         res = r.json()[0]
 
         return {
-            'bus': res['@attributes']['cod'],
+            'router_name': res['@attributes']['cod'],
             'direction': direction,
             'plate_number': res['terminal'],
             'stop_at': res['stopdis'],
@@ -112,28 +112,28 @@ class Bus:
             to_station = stations[1].string
 
         stations = soup.select('div.station')
-        routers = []
+        stops = []
         for station in stations:
             router = {}
             for c in station.children:
                 if c.name == 'span':
                     if c.attrs['class'][0] == 'num':
-                        router['num'] = c.string
+                        router['stop_id'] = c.string
                     elif c.attrs['class'][0] == 'name':
-                        router['name'] = c.string
-            routers.append(router)
+                        router['stop_name'] = c.string
+            stops.append(router)
 
         return {
             'from': from_station,
             'to': to_station,
             'direction': direction,
-            'routers': routers
+            'stops': stops
         }
 
 if __name__ == '__main__':
 
     bus = Bus()
-    routers = bus.query_router('406路')
-    print(routers)
+    stops = bus.query_router('406路')
+    print(stops)
     # r = bus.query_stop('406路', 0, '4.')
 
