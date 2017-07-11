@@ -6,9 +6,9 @@ import json
 app = Flask(__name__)
 
 
-@app.route('/>')
+@app.route('/')
 def hello_world():
-    return 'Hello World'
+    return '<h1>Hello World</h1>'
 
 
 @app.route('/bus/<router_name>/stop/<stop_id>')
