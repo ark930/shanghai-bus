@@ -81,6 +81,7 @@ class Bus:
 
         return {
             'bus': res['@attributes']['cod'],
+            'direction': direction,
             'plate_number': res['terminal'],
             'stop_at': res['stopdis'],
             'distance': res['distance'],
