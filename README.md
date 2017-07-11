@@ -10,10 +10,10 @@
 
 **请求参数**：
 
-| 名称 | 位置 | 类型 | 说明 |
-| --- | --- | --- | --- |
-| router_name | url | string | 公交线路名称，如：1路、2路 |
-| direction | query string | int | 公交行驶方向，上行：0，下行：1 |
+| 名称 | 位置 | 类型 | 必须 | 说明 |
+| --- | --- | --- | --- | --- |
+| router_name | url | string | 是 | 公交线路名称，如：1路、2路 |
+| direction | query string | int | 否 | 公交行驶方向，上行：0（默认），下行：1 |
 
 **返回参数**：
 
@@ -38,11 +38,11 @@
 
 **请求参数**：
 
-| 名称 | 位置 | 类型 | 说明 |
+| 名称 | 位置 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
-| router_name | url | string | 公交线路名称，如：1路、2路 |
-| stop_id | url | int | 公交站点的数字代号 |
-| direction | query string | int | 公交行驶方向，上行：0，下行：1 |
+| router_name | url | string | 是 | 公交线路名称，如：1路、2路 |
+| stop_id | url | int | 是 | 公交站点的数字代号 |
+| direction | query string | int | 否 | 公交行驶方向，上行：0（默认），下行：1 |
 
 **返回参数**：
 
