@@ -41,7 +41,6 @@ class Bus:
     def _query_router_details_page(self, sid, direction='0'):
         self.headers['Referer'] = self.query_router_url
         url = self.query_router_details_url + sid + '/stoptype/' + direction
-        print(url)
         r = self.s.get(url, headers=self.headers)
 
         return r
@@ -71,11 +70,11 @@ class Bus:
         # 第五步：查询公交到站信息
         r = self._query_stop(sid, direction, stop_id)
 
-        print(r.status_code)
-        if r.status_code == 200:
-            print(r.json())
-        else:
-            print(r.text)
+        # print(r.status_code)
+        # if r.status_code == 200:
+        #     print(r.json())
+        # else:
+        #     print(r.text)
 
         res = r.json()[0]
 
