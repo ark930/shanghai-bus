@@ -41,7 +41,7 @@
 | 名称 | 位置 | 类型 | 说明 |
 | --- | --- | --- | --- |
 | router_name | url | string | 公交线路名称，如：1路、2路 |
-| stop_id | string | url | 公交站点的数字代号 |
+| stop_id | url | int | 公交站点的数字代号 |
 | direction | query string | int | 公交行驶方向，上行：0，下行：1 |
 
 **返回参数**：
