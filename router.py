@@ -6,6 +6,11 @@ import json
 app = Flask(__name__)
 
 
+@app.route('/>')
+def hello_world():
+    return 'Hello World'
+
+
 @app.route('/bus/<router_name>/stop/<stop_id>')
 def query_stop(router_name, stop_id):
     direction = request.args.get('direction', '0')
