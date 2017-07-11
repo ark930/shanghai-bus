@@ -1,14 +1,18 @@
 # 上海公交API
 
 #### 1. 公交线路查询接口
-**接口地址**：/bus/<router_name>
+**接口地址**：
+``` url
+/bus/<router_name>
+```
+
 **请求方式**：GET
 **请求参数**：
 
 | 名称 | 位置 | 类型 | 说明 |
 | --- | --- | --- | --- |
 | router_name | url | string | 公交线路名称，如：1路、2路 |
-| direction | query string |  | 公交行驶方向，上行：0，下行：1 |
+| direction | query string | int | 公交行驶方向，上行：0，下行：1 |
 
 **返回参数**：
 
@@ -24,7 +28,11 @@
 ---
 
 #### 2.公交到站信息查询接口
-**接口地址**：/bus/<router_name>/stop/<stop_id>
+**接口地址**：
+``` url
+/bus/<router_name>/stop/<stop_id>
+```
+
 **请求方式**：GET
 **请求参数**：
 
@@ -32,7 +40,7 @@
 | --- | --- | --- | --- |
 | router_name | url | string | 公交线路名称，如：1路、2路 |
 | stop_id | string | url | 公交站点的数字代号 |
-| direction | query string |  | 公交行驶方向，上行：0，下行：1 |
+| direction | query string | int | 公交行驶方向，上行：0，下行：1 |
 
 **返回参数**：
 
