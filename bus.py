@@ -77,7 +77,15 @@ class Bus:
         else:
             print(r.text)
 
-        return r.json()
+        res = r.json()[0]
+
+        return {
+            'bus': res['@attributes']['cod'],
+            'plate_number': res['terminal'],
+            'stop_at': res['stopdis'],
+            'distance': res['distance'],
+            'time': res['time'],
+        }
 
     def query_router(self, bus_name, direction='0'):
         # 第一步：加载首页
