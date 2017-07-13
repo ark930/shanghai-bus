@@ -43,17 +43,17 @@ def query_router_details(router_name):
 
 
 @app.errorhandler(404)
-def page_not_found(e):
+def not_found(e):
     return jsonify({
-        'error': 'page_not_found',
-        'error_msg': '页面不存在'
+        'error': 'not_found',
+        'error_msg': '链接不存在'
     }), 404
 
 
 @app.errorhandler(500)
-def page_not_found(e):
+def internal_server_error(e):
     return jsonify({
-        'error': 'server_internal_error',
+        'error': 'internal_server_error',
         'error_msg': '服务器内部错误'
     }), 500
 

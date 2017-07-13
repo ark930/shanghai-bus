@@ -88,3 +88,38 @@
 | distance | int | 当前公交车到达本站的距离 |
 | time | int | 当前公交车到达本站的时间（秒） |
 | status | string | 公交车状态，waiting：等待发车；running：运行中 |
+
+---
+
+#### 错误响应
+
+**返回参数**：
+
+| 名称 | 类型 | 说明 |
+| --- | --- | --- |
+| error | string | 错误代码 |
+| error_msg | string | 错误说明 |
+
+##### 400 Bad Request
+``` json
+{
+  "error": "router_not_exists",
+  "error_msg": "不存在该公交线路"
+}
+```
+
+##### 404 Not Found
+``` json
+{
+  "error": "page_not_found",
+  "error_msg": "页面不存在"
+}
+```
+
+##### 500 Internal Server Error
+``` json
+{
+  "error": "internal_server_error",
+  "error_msg": "服务器内部错误"
+}
+```
