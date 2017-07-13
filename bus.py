@@ -3,6 +3,8 @@ import pickle
 import os
 import time
 from bs4 import BeautifulSoup
+from bus_routers import Routers
+from InvalidParameterException import InvalidParameterException
 
 
 class Bus:
@@ -53,6 +55,8 @@ class Bus:
         return r
 
     def _init_request(self, router_name):
+        self._check_routers(router_name)
+
         if os.path.exists('session.log'):
             with open('session.log', 'rb') as f:
                 session = pickle.load(f)
@@ -88,6 +92,10 @@ class Bus:
                 'expired_at':  time.time()
             }
             pickle.dump(session, f)
+
+    def _check_routers(self, router_name):
+        if router_name not in Routers:
+            raise InvalidParameterException('router_not_exists', '不存在该公交线路', 400)
 
     def query_stop(self, router_name, direction, stop_id):
         sid = self._init_request(router_name)
