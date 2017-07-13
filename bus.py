@@ -52,7 +52,7 @@ class Bus:
 
         return r
 
-    def _init_request(self):
+    def _init_request(self, router_name):
         if os.path.exists('session.log'):
             with open('session.log', 'rb') as f:
                 session = pickle.load(f)
@@ -67,6 +67,11 @@ class Bus:
         else:
             # session not exists
             self._make_session()
+
+        # 第三步：查询公交路线对应的sid
+        sid = self._query_sid(router_name)
+
+        return sid
 
     def _make_session(self):
         self.s = requests.Session()
@@ -84,43 +89,40 @@ class Bus:
             }
             pickle.dump(session, f)
 
-    def query_stop(self, bus_name, direction, stop_id):
-        self._init_request()
+    def query_stop(self, router_name, direction, stop_id):
+        sid = self._init_request(router_name)
 
-        # 第三步：查询公交路线对应的sid
-        sid = self._query_sid(bus_name)
-
-        # 第四部：进入公交线路明细页面
-        self._query_router_details_page(sid, direction)
-
-        # 第五步：查询公交到站信息
+        # 查询公交到站信息
         r = self._query_stop(sid, direction, stop_id)
 
-        # print(r.status_code)
-        # if r.status_code == 200:
-        #     print(r.json())
-        # else:
-        #     print(r.text)
+        res = r.json()
+        if type(res) is list:
+            res = res[0]
+            return {
+                'router_name': res['@attributes']['cod'],
+                'direction': direction,
+                'plate_number': res['terminal'],
+                'stop_interval': res['stopdis'],
+                'distance': res['distance'],
+                'time': res['time'],
+                'status': 'running'
+            }
+        else:
+            return {
+                'router_name': router_name,
+                'direction': direction,
+                'plate_number': '',
+                'stop_interval': '',
+                'distance': '',
+                'time': '',
+                'status': 'waiting'
+            }
 
-        res = r.json()[0]
+    def query_router(self, router_name, direction='0'):
+        self.sid = self._init_request(router_name)
 
-        return {
-            'router_name': res['@attributes']['cod'],
-            'direction': direction,
-            'plate_number': res['terminal'],
-            'stop_at': res['stopdis'],
-            'distance': res['distance'],
-            'time': res['time'],
-        }
-
-    def query_router(self, bus_name, direction='0'):
-        self._init_request()
-
-        # 第三步：查询公交路线对应的sid
-        sid = self._query_sid(bus_name)
-
-        # 第四部：进入公交线路明细页面
-        r = self._query_router_details_page(sid, direction)
+        # 进入公交线路明细页面
+        r = self._query_router_details_page(self.sid, direction)
 
         soup = BeautifulSoup(r.text.encode(r.encoding), 'lxml')
 
@@ -151,6 +153,33 @@ class Bus:
             'direction': direction,
             'stops': stops
         }
+
+    def query_router_details(self, router_name, direction='0'):
+        router = self.query_router(router_name, direction)
+
+        stops = router['stops']
+
+        for stop in stops:
+            # 查询公交到站信息
+            r = self._query_stop(self.sid, direction, stop['stop_id'])
+
+            res = r.json()
+            if type(res) is list:
+                res = res[0]
+                stop['plate_number'] = res['terminal']
+                stop['stop_interval'] = res['stopdis']
+                stop['distance'] = res['distance']
+                stop['time'] = res['time']
+                stop['status'] = 'running'
+            else:
+                stop['plate_number'] = ''
+                stop['stop_interval'] = ''
+                stop['distance'] = ''
+                stop['time'] = ''
+                stop['status'] = 'waiting'
+
+        return router
+
 
 if __name__ == '__main__':
 

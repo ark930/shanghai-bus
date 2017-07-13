@@ -30,3 +30,12 @@ def query_router(router_name):
 
     return json.dumps(routers)
 
+
+@app.route('/bus/<router_name>/details')
+def query_router_details(router_name):
+    direction = request.args.get('direction', '0')
+
+    bus = Bus()
+    router_details = bus.query_router_details(router_name, direction)
+
+    return json.dumps(router_details)

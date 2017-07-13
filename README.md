@@ -51,6 +51,40 @@
 | router_name | string | 公交线路名称 |
 | direction | int | 公交行驶方向，上行：0，下行：1 |
 | plate_number | string | 公交车车牌号 |
-| stop_at | int | 当前公交车到达站点的数字代号 |
+| stop_interval | int | 公交车到达本站的站数 |
 | distance | int | 当前公交车到达本站的距离 |
 | time | int | 当前公交车到达本站的时间（秒） |
+| status | string | 公交车状态，waiting：等待发车；running：运行中 |
+
+---
+
+#### 3.公交线路详情查询接口
+**接口地址**：
+``` url
+/bus/<router_name>/details
+```
+
+**请求方式**：GET
+
+**请求参数**：
+
+| 名称 | 位置 | 类型 | 必须 | 说明 |
+| --- | --- | --- | --- | --- |
+| router_name | url | string | 是 | 公交线路名称，如：1路、2路 |
+| direction | query string | int | 否 | 公交行驶方向，上行：0（默认），下行：1 |
+
+**返回参数**：
+
+| 名称 | 类型 | 说明 |
+| --- | --- | --- |
+| from | string | 公交起点站名称 |
+| to | string | 公交终点站名称 |
+| direction | int | 公交行驶方向，上行：0，下行：1 |
+| stops | array | 公交站点列表 |
+| stop_id | string | 公交站点的数字代号 |
+| stop_name | string |  公交站点名称 |
+| plate_number | string | 公交车车牌号 |
+| stop_interval | int | 公交车到达本站的站数 |
+| distance | int | 当前公交车到达本站的距离 |
+| time | int | 当前公交车到达本站的时间（秒） |
+| status | string | 公交车状态，waiting：等待发车；running：运行中 |
