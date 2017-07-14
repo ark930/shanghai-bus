@@ -123,3 +123,9 @@
   "error_msg": "服务器内部错误"
 }
 ```
+
+#### 依赖库
+- flask
+- pymysql
+- sqlalchemy
+- bs4
