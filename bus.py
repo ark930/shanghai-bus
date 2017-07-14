@@ -138,10 +138,16 @@ class Bus:
             stations = soup.select('div.upgoing.cur span')
             from_station = stations[0].string
             to_station = stations[1].string
+
+            strat_at = soup.select('div.upgoing.cur em.s')[0].string
+            end_at = soup.select('div.upgoing.cur em.m')[0].string
         else:
             stations = soup.select('div.downgoing.cur span')
             from_station = stations[0].string
             to_station = stations[1].string
+
+            strat_at = soup.select('div.downgoing.cur em.s')[0].string
+            end_at = soup.select('div.downgoing.cur em.m')[0].string
 
         stations = soup.select('div.station')
         stops = []
@@ -158,6 +164,8 @@ class Bus:
         return {
             'from': from_station,
             'to': to_station,
+            'start_at': strat_at,
+            'end_at': end_at,
             'direction': direction,
             'stops': stops
         }
@@ -190,9 +198,16 @@ class Bus:
 
 
 if __name__ == '__main__':
+    router_name = '406路'
+    direction = '0'
+    stop_id = '4'
 
     bus = Bus()
-    stops = bus.query_router('406路')
+    stops = bus.query_router(router_name)
     print(stops)
-    # r = bus.query_stop('406路', 0, '4.')
 
+    r = bus.query_stop(router_name, direction, stop_id)
+    print(r)
+
+    r = bus.query_router_details(router_name, direction)
+    print(r)
