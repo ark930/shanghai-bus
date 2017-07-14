@@ -21,6 +21,8 @@
 | --- | --- | --- |
 | from | string | 公交起点站名称 |
 | to | string | 公交终点站名称 |
+| start_at | string | 首班公交发车时间 |
+| end_at | string | 末班公交发车时间 |
 | direction | int | 公交行驶方向，上行：0，下行：1 |
 | stops | array | 公交站点列表 |
 | stop_id | string | 公交站点的数字代号 |
@@ -79,6 +81,8 @@
 | --- | --- | --- |
 | from | string | 公交起点站名称 |
 | to | string | 公交终点站名称 |
+| start_at | string | 首班公交发车时间 |
+| end_at | string | 末班公交发车时间 |
 | direction | int | 公交行驶方向，上行：0，下行：1 |
 | stops | array | 公交站点列表 |
 | stop_id | string | 公交站点的数字代号 |
