@@ -36,6 +36,10 @@ class Record:
 
         direction = 'up' if routers['direction'] == '0' else 'down'
 
+        # 删除无效的的数据
+        if stops[0]['plate_number'] == stops[1]['plate_number']:
+            del stops[1]
+
         for s in stops:
             stop_interval = None if s['stop_interval'] == '' else s['stop_interval']
 
