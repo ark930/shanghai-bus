@@ -10,7 +10,7 @@ from stop import Stop
 
 
 class Record:
-    def bus_info(self, router_name, direction):
+    def bus_info(self, router_name, direction, group_id):
         bus = Bus()
         routers = bus.query_router_details(router_name, direction)
         stops = routers['stops']
@@ -34,7 +34,6 @@ class Record:
         # 创建 Table
         Base.metadata.create_all(engine)
 
-        group_id = int(time.time())
         direction = 'up' if routers['direction'] == '0' else 'down'
 
         for s in stops:
@@ -60,10 +59,11 @@ class Record:
 if __name__ == '__main__':
     router_name = '406路'
 
+    group_id = int(time.time())
+
     record = Record()
-    record.bus_info(router_name, '0')
-    time.sleep(1)
-    record.bus_info(router_name, '1')
+    record.bus_info(router_name, '0', group_id)
+    record.bus_info(router_name, '1', group_id)
 
 
 
