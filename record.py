@@ -41,7 +41,7 @@ class Record:
             stop_interval = None if s['stop_interval'] == '' else s['stop_interval']
 
             # 过滤不需要记录的站点
-            if stop_interval != 1:
+            if stop_interval != '1':
                 continue
 
             distance = None if s['distance'] == '' else s['distance']
