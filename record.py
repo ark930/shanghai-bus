@@ -13,6 +13,14 @@ class Record:
     def bus_info(self, router_name, direction):
         bus = Bus()
         routers = bus.query_router_details(router_name, direction)
+        stops = routers['stops']
+
+        # 全线停运后，不记录到数据库
+        for s in stops:
+            if s['status'] == 'running':
+                break
+        else:
+            return
 
         Base = declarative_base()
 
@@ -28,11 +36,15 @@ class Record:
 
         group_id = int(time.time())
         direction = 'up' if routers['direction'] == '0' else 'down'
-        stops = routers['stops']
 
         for s in stops:
-            distance = None if s['distance'] == '' else s['distance']
             stop_interval = None if s['stop_interval'] == '' else s['stop_interval']
+
+            # 过滤不需要记录的站点
+            if stop_interval != 1:
+                continue
+
+            distance = None if s['distance'] == '' else s['distance']
             times = None if s['time'] == '' else s['time']
             plate_number = None if s['plate_number'] == '' else s['plate_number']
 
