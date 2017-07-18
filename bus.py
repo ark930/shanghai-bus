@@ -5,10 +5,15 @@ import time
 from bs4 import BeautifulSoup
 from bus_routers import Routers
 from InvalidParameterException import InvalidParameterException
+import logging
+import json
+import datetime
 
 
 class Bus:
     def __init__(self):
+        logging.basicConfig(filename='logger.log', level=logging.INFO)
+
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_2 like Mac OS X) AppleWebKit/603.2.4 '
                           '(KHTML, like Gecko) Mobile/14F89 MicroMessenger/6.5.10 NetType/WIFI Language/zh_CN'
@@ -51,6 +56,11 @@ class Bus:
         self.headers['Referer'] = self.query_router_details_url
 
         r = self.s.post(self.query_stop_url, data=data, headers=self.headers)
+
+        logging.info('')
+        logging.info('Time: ' + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        logging.info('Request: ' + json.dumps(data))
+        logging.info('Response: ' + r.text)
 
         return r
 
