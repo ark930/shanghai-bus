@@ -134,20 +134,12 @@ class Bus:
 
         soup = BeautifulSoup(r.text.encode(r.encoding), 'lxml')
 
-        if direction == '0':
-            stations = soup.select('div.upgoing.cur span')
-            from_station = stations[0].string
-            to_station = stations[1].string
+        stations = soup.select('div.upgoing.cur span')
+        from_station = stations[0].string
+        to_station = stations[1].string
 
-            strat_at = soup.select('div.upgoing.cur em.s')[0].string
-            end_at = soup.select('div.upgoing.cur em.m')[0].string
-        else:
-            stations = soup.select('div.downgoing.cur span')
-            from_station = stations[0].string
-            to_station = stations[1].string
-
-            strat_at = soup.select('div.downgoing.cur em.s')[0].string
-            end_at = soup.select('div.downgoing.cur em.m')[0].string
+        strat_at = soup.select('div.upgoing.cur em.s')[0].string
+        end_at = soup.select('div.upgoing.cur em.m')[0].string
 
         stations = soup.select('div.station')
         stops = []
